@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function BloodSamples() {
   const { user, profile } = useAuth();
@@ -22,7 +23,7 @@ function BloodSamples() {
       setSamples(response.data);
     } catch (error) {
       console.error('Failed to fetch samples', error);
-      // Dummy fallback if backend is not running
+
       setSamples([
         { id: 1, blood_group: 'O+', units_available: 5, hospital_name: 'City Hospital', collection_date: '2023-10-01' },
         { id: 2, blood_group: 'A-', units_available: 2, hospital_name: 'Metro Care', collection_date: '2023-10-02' }
@@ -58,13 +59,13 @@ function BloodSamples() {
       navigate('/login');
       return;
     }
-    
+
     try {
       await axios.post('/requests', { blood_sample_id: sampleId });
       fetchMyRequests(); // Refresh requests after successful request
-      alert('Request sent successfully!');
+      toast.success('Request sent successfully!');
     } catch (error) {
-      alert(error.response?.data?.messages?.error || 'Failed to request sample');
+      toast.error(error.response?.data?.messages?.error || 'Failed to request sample');
     }
   };
 

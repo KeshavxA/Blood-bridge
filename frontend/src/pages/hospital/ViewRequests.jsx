@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function ViewRequests() {
   const [requests, setRequests] = useState([]);
@@ -15,6 +16,7 @@ function ViewRequests() {
       setRequests(response.data);
     } catch (error) {
       console.error('Failed to fetch requests', error);
+      toast.error('Failed to load blood requests');
       // Dummy data if backend fails
       setRequests([
         {
@@ -34,7 +36,7 @@ function ViewRequests() {
 
   const handleStatusChange = async (requestId, newStatus) => {
     // Backend endpoint not implemented yet in this iteration, just updating state locally for demo
-    alert(`Backend endpoint to ${newStatus} request not implemented yet.`);
+    toast.error(`Backend endpoint to ${newStatus} request not implemented yet.`);
     setRequests(requests.map(req => req.id === requestId ? { ...req, status: newStatus } : req));
   };
 

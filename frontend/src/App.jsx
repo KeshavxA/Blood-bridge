@@ -9,12 +9,14 @@ import AddBlood from './pages/hospital/AddBlood';
 import ViewRequests from './pages/hospital/ViewRequests';
 import MyRequests from './pages/receiver/MyRequests';
 import { AuthProvider } from './context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <div className="min-h-screen flex flex-col bg-gray-50">
+          <Toaster position="top-right" />
           <Navbar />
           <main className="flex-grow container mx-auto px-4 py-8">
             <Routes>

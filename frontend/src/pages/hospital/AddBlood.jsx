@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function AddBlood() {
   const navigate = useNavigate();
@@ -10,26 +11,42 @@ function AddBlood() {
     collection_date: new Date().toISOString().split('T')[0]
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: null });
+    }
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.units_available || formData.units_available < 1) newErrors.units_available = 'Must be at least 1 unit';
+    if (!formData.collection_date) newErrors.collection_date = 'Date is required';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validate()) {
+      toast.error('Please fix the errors in the form.');
+      return;
+    }
+
     setLoading(true);
-    setError('');
     
     try {
       await axios.post('/blood-samples', formData);
-      alert('Blood sample added successfully!');
+      toast.success('Blood sample added successfully!');
       navigate('/blood-samples');
     } catch (err) {
-      setError(err.response?.data?.messages?.error || 'Failed to add blood sample. Please check your inputs.');
+      toast.error(err.response?.data?.messages?.error || 'Failed to add blood sample. Please check your inputs.');
     } finally {
       setLoading(false);
     }
@@ -38,7 +55,6 @@ function AddBlood() {
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 mt-10">
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Add Blood Sample</h2>
-      {error && <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-sm border border-red-200">{error}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Blood Group</label>
