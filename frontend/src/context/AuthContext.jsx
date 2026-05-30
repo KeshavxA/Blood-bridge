@@ -15,6 +15,25 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
+
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+
+          if (window.location.pathname !== '/login') {
+            setUser(null);
+            setProfile(null);
+            window.location.href = '/login';
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
   }, []);
 
   const checkAuth = async () => {

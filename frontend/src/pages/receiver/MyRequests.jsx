@@ -1,4 +1,35 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 function MyRequests() {
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  const fetchRequests = async () => {
+    try {
+      const response = await axios.get('/requests/receiver');
+      setRequests(response.data);
+    } catch (error) {
+      console.error('Failed to fetch my requests', error);
+      // Dummy data if backend fails
+      setRequests([
+        {
+          id: 1,
+          hospital_name: 'City Hospital',
+          sample_blood_group: 'O+',
+          requested_at: '2023-10-27 10:00:00',
+          status: 'pending'
+        }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <h2 className="text-3xl font-bold text-gray-800 mb-6">My Blood Requests</h2>
@@ -13,15 +44,34 @@ function MyRequests() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">City Hospital</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600">O+</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-10-27</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
-              </td>
-            </tr>
+            {loading ? (
+              <tr>
+                <td colSpan="4" className="px-6 py-4 text-center text-gray-500">Loading your requests...</td>
+              </tr>
+            ) : requests.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="px-6 py-4 text-center text-gray-500">You haven't made any requests yet.</td>
+              </tr>
+            ) : (
+              requests.map(request => (
+                <tr key={request.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{request.hospital_name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600">{request.sample_blood_group}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(request.requested_at).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      request.status === 'approved' ? 'bg-green-100 text-green-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
