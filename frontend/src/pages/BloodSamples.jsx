@@ -116,7 +116,9 @@ function BloodSamples() {
   return (
     <div>
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Available Blood Samples</h2>
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
+      
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white rounded-xl shadow-md overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -129,7 +131,7 @@ function BloodSamples() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {samples.map(sample => (
-              <tr key={sample.id}>
+              <tr key={`desktop-${sample.id}`}>
                 <td className="px-6 py-4 whitespace-nowrap text-lg font-bold text-red-600">{sample.blood_group}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{sample.hospital_name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{sample.units_available}</td>
@@ -143,6 +145,38 @@ function BloodSamples() {
         </table>
         {samples.length === 0 && (
           <div className="p-6 text-center text-gray-500">No blood samples available at the moment.</div>
+        )}
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden grid grid-cols-1 gap-4">
+        {samples.map(sample => (
+          <div key={`mobile-${sample.id}`} className="bg-white p-5 rounded-xl shadow-md border border-gray-100 flex flex-col gap-3">
+            <div className="flex justify-between items-center border-b pb-2">
+              <span className="text-sm text-gray-500 font-medium">Blood Group</span>
+              <span className="text-xl font-bold text-red-600">{sample.blood_group}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-500">Hospital</span>
+              <span className="text-sm font-medium text-gray-900">{sample.hospital_name}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-500">Units</span>
+              <span className="text-sm text-gray-900">{sample.units_available}</span>
+            </div>
+            <div className="flex justify-between items-center pb-2 border-b">
+              <span className="text-sm text-gray-500">Collection Date</span>
+              <span className="text-sm text-gray-900">{sample.collection_date}</span>
+            </div>
+            <div className="pt-2 flex justify-end">
+              {renderActionButton(sample)}
+            </div>
+          </div>
+        ))}
+        {samples.length === 0 && (
+          <div className="bg-white p-6 rounded-xl shadow border border-gray-100 text-center text-gray-500">
+            No blood samples available at the moment.
+          </div>
         )}
       </div>
     </div>
