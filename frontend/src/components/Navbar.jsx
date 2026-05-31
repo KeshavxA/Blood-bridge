@@ -13,7 +13,9 @@ function Navbar() {
   return (
     <nav className="bg-red-600 text-white shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold tracking-wider">BloodBridge</Link>
+        <Link to="/" className="text-2xl font-bold tracking-wider flex items-center gap-2">
+          <span>🩸</span> BloodBridge
+        </Link>
         <div className="space-x-4 flex items-center">
           <Link to="/blood-samples" className="hover:text-red-200 transition-colors">Blood Samples</Link>
           
