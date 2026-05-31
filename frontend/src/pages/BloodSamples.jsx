@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -153,7 +153,20 @@ function BloodSamples() {
           </tbody>
         </table>
         {!loading && samples.length === 0 && (
-          <div className="p-6 text-center text-gray-500">No blood samples available at the moment.</div>
+          <div className="p-12 text-center text-gray-500 bg-gray-50 flex flex-col items-center justify-center gap-3">
+            <svg className="w-16 h-16 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+            </svg>
+            <p className="text-lg font-medium text-gray-600">No blood samples available at the moment.</p>
+            {user?.role === 'hospital' && (
+              <div className="mt-2">
+                <p className="text-sm text-gray-500 mb-3">Add a new blood sample to your inventory so receivers can request it.</p>
+                <Link to="/hospital/add-blood" className="text-red-600 hover:text-red-700 font-medium bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg transition-colors">
+                  Add Blood Sample
+                </Link>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
@@ -188,8 +201,19 @@ function BloodSamples() {
           </div>
         ))}
         {!loading && samples.length === 0 && (
-          <div className="bg-white p-6 rounded-xl shadow border border-gray-100 text-center text-gray-500">
-            No blood samples available at the moment.
+          <div className="bg-white p-10 rounded-xl shadow border border-gray-100 flex flex-col items-center justify-center gap-3 text-center">
+            <svg className="w-16 h-16 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+            </svg>
+            <p className="text-lg font-medium text-gray-600">No blood samples available at the moment.</p>
+            {user?.role === 'hospital' && (
+              <div className="mt-2">
+                <p className="text-sm text-gray-500 mb-3">Add a new blood sample to your inventory so receivers can request it.</p>
+                <Link to="/hospital/add-blood" className="text-red-600 hover:text-red-700 font-medium bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg transition-colors inline-block">
+                  Add Blood Sample
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>
