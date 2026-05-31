@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Spinner from '../../components/Spinner';
 
 function MyRequests() {
   const [requests, setRequests] = useState([]);
@@ -46,7 +47,12 @@ function MyRequests() {
           <tbody className="bg-white divide-y divide-gray-200">
             {loading ? (
               <tr>
-                <td colSpan="4" className="px-6 py-4 text-center text-gray-500">Loading your requests...</td>
+                <td colSpan="4" className="px-6 py-8 text-center text-gray-500">
+                  <div className="flex justify-center items-center flex-col gap-2">
+                    <Spinner className="w-8 h-8 text-red-600" />
+                    <span>Loading your requests...</span>
+                  </div>
+                </td>
               </tr>
             ) : requests.length === 0 ? (
               <tr>

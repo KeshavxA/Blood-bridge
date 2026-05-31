@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import Spinner from '../components/Spinner';
 
 function Login() {
   const navigate = useNavigate();
@@ -74,9 +75,9 @@ function Login() {
         <button 
           type="submit" 
           disabled={loading}
-          className="w-full bg-red-600 text-white rounded-md py-2 hover:bg-red-700 transition-colors disabled:bg-red-400"
+          className="w-full bg-red-600 text-white rounded-md py-2 hover:bg-red-700 transition-colors disabled:bg-red-400 flex items-center justify-center gap-2"
         >
-          {loading ? 'Logging in...' : 'Login'}
+          {loading ? <><Spinner /> Logging in...</> : 'Login'}
         </button>
       </form>
     </div>

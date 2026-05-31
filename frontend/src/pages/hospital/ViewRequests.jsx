@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import Spinner from '../../components/Spinner';
 
 function ViewRequests() {
   const [requests, setRequests] = useState([]);
@@ -18,6 +19,7 @@ function ViewRequests() {
       console.error('Failed to fetch requests', error);
       toast.error('Failed to load blood requests');
 
+      // Dummy data if backend fails
       setRequests([
         {
           id: 1,
@@ -58,7 +60,12 @@ function ViewRequests() {
           <tbody className="bg-white divide-y divide-gray-200">
             {loading ? (
               <tr>
-                <td colSpan="6" className="px-6 py-4 text-center text-gray-500">Loading requests...</td>
+                <td colSpan="6" className="px-6 py-8 text-center text-gray-500">
+                  <div className="flex justify-center items-center flex-col gap-2">
+                    <Spinner className="w-8 h-8 text-red-600" />
+                    <span>Loading requests...</span>
+                  </div>
+                </td>
               </tr>
             ) : requests.length === 0 ? (
               <tr>

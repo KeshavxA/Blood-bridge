@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import Spinner from '../components/Spinner';
 
 function HospitalRegister() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function HospitalRegister() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear inline error when typing
+
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: null });
     }
@@ -30,7 +31,7 @@ function HospitalRegister() {
     if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
     if (!formData.address.trim()) newErrors.address = 'Address is required';
     if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -41,7 +42,7 @@ function HospitalRegister() {
       toast.error('Please fix the errors in the form.');
       return;
     }
-    
+
     setLoading(true);
     try {
       await axios.post('/auth/register-hospital', formData);
@@ -66,65 +67,65 @@ function HospitalRegister() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Hospital Name</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.name ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`} 
+            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.name ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`}
           />
           {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Email</label>
-          <input 
-            type="email" 
+          <input
+            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.email ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`} 
+            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.email ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`}
           />
           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Password</label>
-          <input 
-            type="password" 
+          <input
+            type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.password ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`} 
+            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.password ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`}
           />
           {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Address</label>
-          <textarea 
+          <textarea
             name="address"
             value={formData.address}
             onChange={handleChange}
-            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.address ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`} 
+            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.address ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`}
             rows="3"
           ></textarea>
           {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Phone</label>
-          <input 
-            type="tel" 
+          <input
+            type="tel"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.phone ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`} 
+            className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.phone ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`}
           />
           {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
         </div>
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={loading}
-          className="w-full bg-red-600 text-white rounded-md py-2 hover:bg-red-700 transition-colors disabled:bg-red-400"
+          className="w-full bg-red-600 text-white rounded-md py-2 hover:bg-red-700 transition-colors disabled:bg-red-400 flex items-center justify-center gap-2"
         >
-          {loading ? 'Registering...' : 'Register'}
+          {loading ? <><Spinner /> Registering...</> : 'Register'}
         </button>
       </form>
     </div>

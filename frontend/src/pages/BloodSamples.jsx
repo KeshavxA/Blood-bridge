@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import Spinner from '../components/Spinner';
 
 function BloodSamples() {
   const { user, profile } = useAuth();
@@ -116,8 +117,7 @@ function BloodSamples() {
   return (
     <div>
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Available Blood Samples</h2>
-      
-      {/* Desktop Table View */}
+
       <div className="hidden md:block bg-white rounded-xl shadow-md overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -130,7 +130,16 @@ function BloodSamples() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {samples.map(sample => (
+            {loading ? (
+              <tr>
+                <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                  <div className="flex justify-center items-center flex-col gap-2">
+                    <Spinner className="w-8 h-8 text-red-600" />
+                    <span>Loading samples...</span>
+                  </div>
+                </td>
+              </tr>
+            ) : samples.map(sample => (
               <tr key={`desktop-${sample.id}`}>
                 <td className="px-6 py-4 whitespace-nowrap text-lg font-bold text-red-600">{sample.blood_group}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{sample.hospital_name}</td>
@@ -143,14 +152,19 @@ function BloodSamples() {
             ))}
           </tbody>
         </table>
-        {samples.length === 0 && (
+        {!loading && samples.length === 0 && (
           <div className="p-6 text-center text-gray-500">No blood samples available at the moment.</div>
         )}
       </div>
 
       {/* Mobile Card View */}
       <div className="md:hidden grid grid-cols-1 gap-4">
-        {samples.map(sample => (
+        {loading ? (
+          <div className="bg-white p-10 rounded-xl shadow border border-gray-100 flex flex-col items-center justify-center gap-3">
+            <Spinner className="w-8 h-8 text-red-600" />
+            <span className="text-gray-500">Loading samples...</span>
+          </div>
+        ) : samples.map(sample => (
           <div key={`mobile-${sample.id}`} className="bg-white p-5 rounded-xl shadow-md border border-gray-100 flex flex-col gap-3">
             <div className="flex justify-between items-center border-b pb-2">
               <span className="text-sm text-gray-500 font-medium">Blood Group</span>
@@ -173,7 +187,7 @@ function BloodSamples() {
             </div>
           </div>
         ))}
-        {samples.length === 0 && (
+        {!loading && samples.length === 0 && (
           <div className="bg-white p-6 rounded-xl shadow border border-gray-100 text-center text-gray-500">
             No blood samples available at the moment.
           </div>
