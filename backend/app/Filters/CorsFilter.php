@@ -10,14 +10,16 @@ class CorsFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        header('Access-Control-Allow-Origin: http://localhost:5173');
-        header('Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization');
-        header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
-        header('Access-Control-Allow-Credentials: true');
+        $origin = $_SERVER['HTTP_ORIGIN'] ?? 'http://localhost:5175';
+        $response = service('response');
+        $response->setHeader('Access-Control-Allow-Origin', $origin);
+        $response->setHeader('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization');
+        $response->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+        $response->setHeader('Access-Control-Allow-Credentials', 'true');
         
         $method = $_SERVER['REQUEST_METHOD'] ?? '';
         if ($method == "OPTIONS") {
-            die();
+            return $response->setStatusCode(200);
         }
     }
 
