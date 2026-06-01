@@ -40,7 +40,8 @@ function Login() {
       toast.success('Logged in successfully!');
       navigate('/blood-samples');
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Invalid email or password.');
+      const apiError = err.response?.data?.messages?.error || err.response?.data?.error;
+      toast.error(typeof apiError === 'string' ? apiError : 'Invalid email or password.');
     } finally {
       setLoading(false);
     }
