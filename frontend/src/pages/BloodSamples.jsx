@@ -10,6 +10,7 @@ function BloodSamples() {
   const navigate = useNavigate();
   const [samples, setSamples] = useState([]);
   const [myRequests, setMyRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchSamples();
@@ -19,6 +20,7 @@ function BloodSamples() {
   }, [user]);
 
   const fetchSamples = async () => {
+    setLoading(true);
     try {
       const response = await axios.get('/blood-samples');
       setSamples(response.data);
@@ -29,6 +31,8 @@ function BloodSamples() {
         { id: 1, blood_group: 'O+', units_available: 5, hospital_name: 'City Hospital', collection_date: '2023-10-01' },
         { id: 2, blood_group: 'A-', units_available: 2, hospital_name: 'Metro Care', collection_date: '2023-10-02' }
       ]);
+    } finally {
+      setLoading(false);
     }
   };
 
