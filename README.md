@@ -75,10 +75,8 @@ BloodBridge is a fully responsive Blood Bank Management System that connects hos
 
 ## 📸 Screenshots
 
-*(Add screenshots of your application here!)*
+### Desktop Dashboard
+<img src="desktop-view.png" width="800" alt="Desktop View" />
 
 ### Mobile Responsive Cards
-<img src="placeholder-mobile.png" width="300" alt="Mobile View" />
-
-### Desktop Dashboard
-<img src="placeholder-desktop.png" width="800" alt="Desktop View" />
+<img src="mobile-view.png" width="300" alt="Mobile View" />
