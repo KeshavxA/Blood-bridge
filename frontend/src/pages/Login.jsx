@@ -55,6 +55,7 @@ function Login() {
           <input 
             type="email" 
             name="email"
+            autoComplete="username"
             value={formData.email}
             onChange={handleChange}
             className={`mt-1 block w-full rounded-md shadow-sm p-2 border ${errors.email ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-red-500 focus:ring-red-200'} focus:ring`} 
