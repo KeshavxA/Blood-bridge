@@ -14,7 +14,7 @@ $routes->group('api', function($routes) {
     $routes->post('auth/login', 'Auth::login');
     
     $routes->post('auth/logout', 'Auth::logout', ['filter' => 'auth']);
-    $routes->get('auth/me', 'Auth::me', ['filter' => 'auth']);
+    $routes->get('auth/me', 'Auth::me');
 
     $routes->get('blood-samples', 'BloodSamples::index'); // Public
     $routes->post('blood-samples', 'BloodSamples::create', ['filter' => 'auth:hospital']);

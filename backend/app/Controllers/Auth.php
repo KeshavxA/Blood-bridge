@@ -140,8 +140,8 @@ class Auth extends ResourceController
 
     public function me()
     {
-        if (!session()->get('logged_in')) {
-            return $this->failUnauthorized('Not logged in');
+        if (!session()->get('logged_in') || !session()->get('user_id')) {
+            return $this->respond(['authenticated' => false, 'user' => null, 'profile' => null], 200);
         }
 
         $userModel = new UserModel();

@@ -39,8 +39,13 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const response = await axios.get('/auth/me');
-      setUser(response.data.user);
-      setProfile(response.data.profile);
+      if (response.data.authenticated === false || !response.data.user) {
+        setUser(null);
+        setProfile(null);
+      } else {
+        setUser(response.data.user);
+        setProfile(response.data.profile);
+      }
     } catch (error) {
       setUser(null);
       setProfile(null);
