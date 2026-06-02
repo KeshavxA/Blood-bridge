@@ -18,7 +18,7 @@ function ViewRequests() {
     } catch (error) {
       console.error('Failed to fetch requests', error);
       toast.error('Failed to load blood requests');
-
+      
       // Dummy data if backend fails
       setRequests([
         {
@@ -92,8 +92,8 @@ function ViewRequests() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        request.status === 'approved' ? 'bg-green-100 text-green-800' :
-                          'bg-red-100 text-red-800'
+                      request.status === 'approved' ? 'bg-green-100 text-green-800' :
+                        'bg-red-100 text-red-800'
                       }`}>
                       {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                     </span>
